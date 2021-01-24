@@ -61,7 +61,7 @@ In each iteration, we use 9 buckets of articles to generate our transition matri
 
 In the first iteration, we are only able to generate vectors for a single bucket of data. By iterating the above step 10 times, we are able to generate a vector for all articles in the training set. We have also avoided information leakage. The idea is similar to cross validation except we get a larger training sample as opposed to validation sample. We can now train our gradient boosting classifier.
 
-The gradient boosting classifier used is from sklearn and the hyperparameters tuned using RandomisedSearchCV and GridSearchCV
+The gradient boosting classifier used is from sklearn and the hyperparameters are tuned using RandomisedSearchCV and GridSearchCV
 
 
 Our first set uses a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles. The data is obtained from https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset. We get the following results:
