@@ -40,9 +40,9 @@ Now comes the intresting part.
 
 At this point we have six values.
 
-P(title = fake | x1 -> x2 - > x3 -> ...), P(title = real| x1 -> x2 - > x3 -> ...), (we scale these two such that the sum = 1)
-P(body = fake | x1 -> x2 - > x3 -> ...), P(body = real| x1 -> x2 - > x3 -> ...), (we scale these two such that the sum = 1)
-P(body = fake | x1^x2 -> x3, x2^x3 - > x4, ...), P(body = real| x1^x2 -> x3, x2^x3 - > x4, ...) (we scale these two such that the sum = 1).
+- P(title = fake | x1 -> x2 - > x3 -> ...), P(title = real| x1 -> x2 - > x3 -> ...), (we scale these two such that the sum = 1)
+- P(body = fake | x1 -> x2 - > x3 -> ...), P(body = real| x1 -> x2 - > x3 -> ...), (we scale these two such that the sum = 1)
+- P(body = fake | x1^x2 -> x3, x2^x3 - > x4, ...), P(body = real| x1^x2 -> x3, x2^x3 - > x4, ...) (we scale these two such that the sum = 1).
 
 We could take a majority vote based on the class that each pair gives a higher probability for, but we believe that each pair should be weighted. Therefore we add a gradient boosting classifier to our model.
 We also add a 7th and 8th value which is the compound sentiment of the title and the body based on VADER semantics to add a bit more dimensionality. 
