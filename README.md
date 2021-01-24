@@ -46,7 +46,7 @@ At this point we have six values.
 - P(body = fake | x1 -> x2 - > x3 -> ...), P(body = real| x1 -> x2 - > x3 -> ...), (we scale these two such that the sum = 1)
 - P(body = fake | x1^x2 -> x3, x2^x3 - > x4, ...), P(body = real| x1^x2 -> x3, x2^x3 - > x4, ...) (we scale these two such that the sum = 1).
 
-We could take a majority vote based on the class that each pair gives a higher probability for, but we believe that each pair should be weighted. Therefore we add a gradient boosting classifier to our model.
+We could take a majority vote based on the class that each pair gives a higher probability for, but we believe that each pair should be weighted. Therefore we add a gradient boosting classifier (GBC) to our model.
 We also add a 7th and 8th value which is the compound sentiment of the title and the body based on VADER semantics to add a bit more dimensionality. 
 
 So for each article with a title and a body, we generate a vector of length 8 and feed that into our GBC.
@@ -57,7 +57,7 @@ In order to avoid this, we used cross training which is demonstrated below
 
 We break our training dateset into 10 equal buckets.
  
-In each iteration, we use 9 buckets of articles to generate our transition matrices. Using this transition matrix in the last bucket, we are able to get our vector of length 8 for the articles in that remaining bucket. We will be using the vectors to train a gradient boosting classifier later. 
+In each iteration, we use 9 buckets of articles to generate our transition matrices. Using this transition matrix in the last bucket, we are able to get our vector of length 8 for the articles in that remaining bucket. We will be using the vectors to train our GBC later. 
 
 In the first iteration, we are only able to generate vectors for a single bucket of data. By iterating the above step 10 times, we are able to generate a vector for all articles in the training set. We have also avoided information leakage. The idea is similar to cross validation except we get a larger training sample as opposed to validation sample. We can now train our gradient boosting classifier.
 
@@ -89,7 +89,7 @@ Using a second dataset from https://www.kaggle.com/c/fake-news/data?select=train
        macro avg       0.78      0.77      0.76      1400
     weighted avg       0.78      0.77      0.76      1400
  
-Which looks more realistic and is a good sign. Out prediction accuracy is a lot better than random and our scores are pretty good. This means that the concept of this classifier can work.
+Which looks more realistic and is a good sign. Our prediction accuracy is a lot better than random and our scores are pretty good. This means that the concept of this classifier can work.
 
 Overall this is just a proof of concept of a machine learning model to classify fake news.  The important thing is that it must be able to classify an article based on the body and title since those are the most important parts.
 In due time it will also be possible to extend this by incorporating it into a bot or website.
