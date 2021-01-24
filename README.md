@@ -51,15 +51,15 @@ We also add a 7th and 8th value which is the compound sentiment of the title and
 
 So for each article with a title and a body, we generate a vector of length 8 and feed that into our GBC.
 
-
-
-
 When training the classifier, we have to be careful not to have information leakage, where we use a certain body and title to contribute to our transition matrix, and then calculate the vector of length 8 again for that article using said transition matrix.
+
 In order to avoid this, we used cross training which is demonstrated below
 
 We break our training dateset into 10 equal buckets.
  
-We use 9 buckets of articles to generate our transition matrices, and use these generated tranisition matric to get our vector of length 8 for the articles in the remaining bucket. Now we can generate a vector for each article while avoiding information leakage.
+In each iteration, we use 9 buckets of articles to generate our transition matrices. Using this transition matrix in the last bucket, we are able to get our vector of length 8 for the articles in that remaining bucket. We will be using the vectors to train a gradient boosting classifier later. 
+
+In the first iteration, we are only able to generate vectors for a single bucket of data. By iterating the above step 10 times, we are able to generate a vector for all articles in the training set. We have also avoided information leakage. The idea is similar to cross validation except we get a larger training sample as opposed to validation sample. We can now train our gradient boosting classifier.
 
 The gradient boosting classifier used is from sklearn and the hyperparameters tuned using RandomisedSearchCV and GridSearchCV
 
