@@ -173,7 +173,7 @@ class Classifier:
         return probVector
 
 
-
+# The code directly below until the next comment uses https://www.kaggle.com/c/fake-news/data?select=train.csv as dataset
 alt = "train.csv"
 
 alt = pd.read_csv(source + alt).sort_values(by=['label']).dropna().reset_index()
@@ -186,7 +186,7 @@ real = alt.iloc[number_of_labels[1]:].reset_index().drop(columns = ['index'])
 bucket_train = 700
 bucket_test = 70
 
-# The commented code is using a dataset that is not as good
+# The commented code is uses https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset as dataset
 # fake = pd.read_csv(source+fake)
 # real = pd.read_csv(source+real)
 # 
