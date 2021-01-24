@@ -78,13 +78,13 @@ We aim to change the dataset to get a better estimate of how well our model work
 Using a second dataset from https://www.kaggle.com/c/fake-news/data?select=train.csv, we get the following results:
 
                   precision    recall  f1-score   support
-
-               0       0.73      0.83      0.77       700
-               1       0.80      0.69      0.74       700
-
-        accuracy                           0.76      1400
-       macro avg       0.76      0.76      0.76      1400
-    weighted avg       0.76      0.76      0.76      1400
+  
+               0       0.72      0.86      0.79       700
+               1       0.83      0.67      0.74       700
+ 
+        accuracy                           0.77      1400
+       macro avg       0.78      0.77      0.76      1400
+    weighted avg       0.78      0.77      0.76      1400
  
 Which looks more realistic and is a good sign. Out prediction accuracy is a lot better than random and our scores are pretty good. This means that the concept of this classifier can work.
 
