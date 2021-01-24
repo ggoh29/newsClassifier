@@ -12,13 +12,15 @@ from scipy.special import softmax
 import math
 import copy
 from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
+import eli5
+from eli5.sklearn import PermutationImportance
 
 
 source = r"C:/Users/CHRIS/Documents/"
 fake = "Fake.csv"
 real = "True.csv"
 
-class Classifier:
+class newsClassifier:
 
     def __init__(self):
         self.tokens = {"CC": 1, "CD": 1, "DT": 1, "EX": 1, "FW": 1, "IN": 1, "JJ": 1, "JJR": 1, "JJS": 1, "LS": 1, "MD": 1,
@@ -174,7 +176,7 @@ class Classifier:
         return probVector
 
 
-
+"""using https://www.kaggle.com/c/fake-news/data?select=train.csv as dataset"""
 alt = "train.csv"
 
 alt = pd.read_csv(source + alt).sort_values(by=['label']).dropna().reset_index()
@@ -187,6 +189,7 @@ real = alt.iloc[number_of_labels[1]:].reset_index().drop(columns = ['index'])
 bucket_train = 700
 bucket_test = 70
 
+"""using https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset as dataset"""
 # fake = pd.read_csv(source+fake)
 # real = pd.read_csv(source+real)
 #
@@ -203,7 +206,7 @@ fake_train_10 = np.array_split(fake_train, 10)
 real_train_10 = np.array_split(real_train, 10)
 
 for i in range(10):
-    classifier = Classifier()
+    classifier = newsClassifier()
     for j in range(10):
         if i != j:
             classifier.parseDataframe(fake_train_10[j], "fake")
@@ -214,29 +217,31 @@ for i in range(10):
         x_train.append(vector)
 
 
-# hyperparameter tuning - to be commented out once saved
+"""hyperparameter tuning - to be commented out once saved"""
+
 # p_test = {'learning_rate':[0.01, 0.05, 0.1, 0.25, 0.5], 'n_estimators':[100, 250, 500, 750, 1000]}
-# 
+#
 # tuning = RandomizedSearchCV(estimator=GradientBoostingClassifier(max_depth=4, min_samples_split=2, min_samples_leaf=1, subsample=1,max_features='sqrt', random_state=10),
 #                             param_distributions = p_test, scoring='accuracy', n_jobs=-1, n_iter=10, cv=5)
-# 
+#
 # tuning.fit(np.asarray(x_train), y_train)
-# 
+#
 # lr = tuning.best_params_['learning_rate']
 # ne = tuning.best_params_['n_estimators']
-# 
+#
 # p_test2 = {'max_depth':[2, 3, 4, 5, 6, 7]}
-# 
+#
 # tuning = GridSearchCV(estimator=GradientBoostingClassifier(learning_rate=lr, n_estimators=ne, min_samples_split=2, min_samples_leaf=1, subsample=1,max_features='sqrt', random_state=10),
 #             param_grid = p_test2, scoring='accuracy',n_jobs=4, cv=5)
 # tuning.fit(np.asarray(x_train), y_train)
-# 
+#
 # md = tuning.best_params_['max_depth']
-# 
+#
 # print("params are: learning rate:" + str(lr) + ",n_estimators:" + str(ne) + ",max_depth:" + str(md))
 # "params are: learning rate:0.01,n_estimators:250,max_depth:3"
 
 
+"""parameter tuned using the above commented code"""
 model = GradientBoostingClassifier(learning_rate=0.01, n_estimators=250, max_depth=3, min_samples_split=2, min_samples_leaf=1, subsample=1,max_features='sqrt', random_state=10)
 model.fit(np.asarray(x_train), y_train)
 
@@ -245,7 +250,7 @@ real_test = real.tail(bucket_test * 10)
 
 y_test = np.array([0] * bucket_test * 10 + [1] * bucket_test * 10)
 
-classifier = Classifier()
+classifier = newsClassifier()
 classifier.parseDataframe(fake_train, "fake")
 classifier.parseDataframe(real_train, "real")
 classifier.smoothAll()
@@ -269,10 +274,25 @@ print(classification_report(y_test, prediction))
 # with https://www.kaggle.com/c/fake-news/data?select=train.csv as dataset
 
 #               precision    recall  f1-score   support
-# 
+#
 #            0       0.72      0.86      0.79       700
 #            1       0.83      0.67      0.74       700
-# 
+#
 #     accuracy                           0.77      1400
 #    macro avg       0.78      0.77      0.76      1400
 # weighted avg       0.78      0.77      0.76      1400
+
+"""permutation importance to get feature importance"""
+feature_names = ["title|fake", "title|real", "body|fake", "body|real", "body2|fake", "body2|real", "sent_title", "sent_body"]
+permutation = PermutationImportance(model, random_state=0).fit(np.asarray(x_train), y_train)
+output = eli5.explain_weights(permutation, feature_names=feature_names, top=8)
+print(output)
+
+# feature='title|fake', weight=0.02622857142857147,
+# feature='title|real', weight=0.021014285714285763
+# feature='body|fake', weight=0.01660000000000004,
+# feature='body|real', weight=0.028071428571428636,
+# feature='sent_body', weight=0.0033285714285714585,
+# feature='sent_title', weight=0.0018285714285714682,
+# feature='body2|fake', weight=0.0007142857142857561,
+# feature='body2|real', weight=0.0005714285714286005
