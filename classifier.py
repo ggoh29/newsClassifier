@@ -56,15 +56,7 @@ class Classifier:
             self.buildMatrix(body_tokens, self.body_dct[type])
             self.buildMemOfTwoMatrix(body_tokens, self.memTwoDct[type])
 
-
-    def smoothAll(self):
-
-        for txt_type in ['real', 'fake']:
-            self.smooth(self.title_dct[txt_type])
-            self.smooth(self.body_dct[txt_type])
-            self.smooth(self.memTwoDct[txt_type])
-
-
+            
     def tokenize(self, text):
         ss = nt.sent_tokenize(text)
         tokenized_sent = [nt.word_tokenize(sent) for sent in ss]
@@ -73,7 +65,7 @@ class Classifier:
         tokens.append(("END", "END"))
         return tokens
 
-
+    
     def buildMatrix(self, tokens_lst, matrix):
 
         for i in range(1, len(tokens_lst)):
@@ -83,7 +75,7 @@ class Classifier:
                 continue
             else:
                 matrix[prev][cur] += 1
-
+                
 
     def buildMemOfTwoMatrix(self, tokens_lst, matrix):
 
@@ -95,6 +87,14 @@ class Classifier:
                 continue
             else:
                 matrix[prevprev + " " + prev][cur] += 1
+                
+              
+    def smoothAll(self):
+
+        for txt_type in ['real', 'fake']:
+            self.smooth(self.title_dct[txt_type])
+            self.smooth(self.body_dct[txt_type])
+            self.smooth(self.memTwoDct[txt_type])
 
 
     def smooth(self, matrix):
