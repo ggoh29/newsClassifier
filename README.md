@@ -52,7 +52,7 @@ So for each article with a title and a body, we generate a vector of length 8 an
 
 
 
-When training the classifier, we have to be careful not to have information leakage, where we use a certain body and title to contribute to our transition matrix, and then calculate the vector of length 8 again for that article.
+When training the classifier, we have to be careful not to have information leakage, where we use a certain body and title to contribute to our transition matrix, and then calculate the vector of length 8 again for that article using said transition matrix.
 In order to avoid this, we used cross training which is demonstrated below
 
 We break our training dateset into 10 equal buckets.
