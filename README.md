@@ -57,7 +57,7 @@ In order to avoid this, we used cross training which is demonstrated below
 
 We break our training dateset into 10 equal buckets.
  
-In each iteration, we use 9 buckets of articles to generate our transition matrices. Using this transition matrix in the last bucket, we are able to get our vector of length 8 for the articles in that remaining bucket. We will be using the vectors to train our GBC later. 
+In each iteration, we use 9 buckets of articles to generate our transition matrices. Using this transition matrix on the last bucket, we are able to get our vector of length 8 for the articles in that remaining bucket. We will be using the vectors to train our GBC later. 
 
 In the first iteration, we are only able to generate vectors for a single bucket of data. By iterating the above step 10 times, we are able to generate a vector for all articles in the training set. We have also avoided information leakage. The idea is similar to cross validation except we get a larger training sample as opposed to validation sample. We can now train our gradient boosting classifier.
 
