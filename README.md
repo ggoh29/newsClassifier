@@ -86,7 +86,7 @@ Using a second dataset from https://www.kaggle.com/c/fake-news/data?select=train
        macro avg       0.76      0.76      0.76      1400
     weighted avg       0.76      0.76      0.76      1400
  
-Which looks more realistic and is a good sign. Out prediction accuracy is a lot better than random and our score are pretty good. This means that the concept of this classifier can work.
+Which looks more realistic and is a good sign. Out prediction accuracy is a lot better than random and our scores are pretty good. This means that the concept of this classifier can work.
 
 Overall this is just a proof of concept of a machine learning model to classify fake news.  The important thing is that it must be able to classify an article based on the body and title since those are the most important parts.
 In due time it will also be possible to extend this by incorporating it into a bot or website.
