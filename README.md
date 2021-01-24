@@ -59,7 +59,7 @@ We break our training dateset into 10 equal buckets.
  
 We use 9 buckets of articles to generate our transition matrices, and use these generated tranisition matric to get our vector of length 8 for the articles in the remaining bucket. Now we can generate a vector for each article while avoiding information leakage.
 
-The gradient boosting classifier used is from sklearn and the hyperparameters are not fine tuned. 
+The gradient boosting classifier used is from sklearn and the hyperparameters tuned using RandomisedSearchCV 
 
 Using a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles, we get the following results:
 
