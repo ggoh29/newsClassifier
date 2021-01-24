@@ -8,7 +8,7 @@ Team twH1uxEQ, Bot that detects and reports disinformation on social media platf
 News classifier Optimised On SEmantics analysis (NOOSE)
 
 We have built a working model of a classifier that can predict fake news. It does this by looking at the semantics of the news article. 
-Our dataset was taken from kaggle https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset
+Our dataset was taken from kaggle https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset and https://www.kaggle.com/c/fake-news/data?select=train.csv.
 
 We theorise that the semantics of a fake news article will be different from a real news articles, where a fake news articles will try to be more
 persuasive and attention grabbing while a real news article is more objective or neutral.
@@ -63,7 +63,8 @@ In the first iteration, we are only able to generate vectors for a single bucket
 
 The gradient boosting classifier used is from sklearn and the hyperparameters tuned using RandomisedSearchCV and GridSearchCV
 
-Using a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles, we get the following results:
+
+Our first set uses a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles. The data is obtained from https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset. We get the following results:
 
                   precision    recall  f1-score   support
 
