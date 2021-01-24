@@ -61,7 +61,7 @@ We use 9 buckets of articles to generate our transition matrices, and use these 
 
 The gradient boosting classifier used is from sklearn and the hyperparameters are not fine tuned. 
 
-Using a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles, we get the following result.
+Using a training set of 18000 real articles and 18000 fake articles and a test set of 2000 real articles and 2000 fake articles, we get the following results:
 
               precision    recall  f1-score   support
 
@@ -74,6 +74,19 @@ weighted avg       0.99      0.99      0.99      4000
 
 Which definetly looks suspicious. On closer inspection, the problem lies more with the data than our model. Other Kagglers have managed to achieve equally high prediction results using this dataset. 
 We aim to change the dataset to get a better estimate of how well our model works.
+
+Using a second dataset from https://www.kaggle.com/c/fake-news/data?select=train.csv, we get the following results:
+
+               precision    recall  f1-score   support
+
+            0       0.73      0.83      0.77       700
+            1       0.80      0.69      0.74       700
+
+    accuracy                           0.76      1400
+    macro avg       0.76      0.76      0.76      1400
+ weighted avg       0.76      0.76      0.76      1400
+ 
+Which looks more realistic and is a good sign. Out prediction accuracy is a lot better than random and our score are pretty good. This means that the concept of this classifier can work.
 
 Overall this is just a proof of concept of a machine learning model to classify fake news.  The important thing is that it must be able to classify an article based on the body and title since those are the most important parts.
 In due time it will also be possible to extend this by incorporating it into a bot or website.
