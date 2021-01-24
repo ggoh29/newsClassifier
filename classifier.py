@@ -13,9 +13,7 @@ import math
 import copy
 
 
-# dataset = https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset
-
-source = r"path to csv"
+source = r"C:/Users/CHRIS/Documents/"
 fake = "Fake.csv"
 real = "True.csv"
 
@@ -176,12 +174,27 @@ class Classifier:
 
 
 
+alt = "train.csv"
 
-bucket_train = 180
-bucket_test = 20
+alt = pd.read_csv(source + alt).sort_values(by=['label']).dropna().reset_index()
+alt = alt.drop(columns = ['id', 'index'])
+number_of_labels = list(alt['label'].value_counts().values)
 
-fake_train = pd.read_csv(source+fake).head(bucket_train * 10)
-real_train = pd.read_csv(source+real).head(bucket_train * 10)
+fake = alt.iloc[:number_of_labels[1]].reset_index().drop(columns = ['index'])
+real = alt.iloc[number_of_labels[1]:].reset_index().drop(columns = ['index'])
+
+bucket_train = 700
+bucket_test = 70
+
+# fake = pd.read_csv(source+fake)
+# real = pd.read_csv(source+real)
+# 
+# bucket_train = 1800
+# bucket_test = 200
+
+fake_train = fake.head(bucket_train * 10)
+real_train = real.head(bucket_train * 10)
+
 y_train = np.array(([0] * bucket_train + [1] * bucket_train) * 10)
 x_train = []
 
@@ -203,8 +216,8 @@ model = GradientBoostingClassifier(learning_rate=0.01, n_estimators=500, max_dep
                                 min_samples_leaf=1, subsample=1,max_features='sqrt', random_state=10)
 model.fit(np.asarray(x_train), y_train)
 
-fake_test = pd.read_csv(source+fake).tail(bucket_test * 10)
-real_test = pd.read_csv(source+real).tail(bucket_test * 10)
+fake_test = fake.tail(bucket_test * 10)
+real_test = real.tail(bucket_test * 10)
 
 y_test = np.array([0] * bucket_test * 10 + [1] * bucket_test * 10)
 
@@ -218,6 +231,8 @@ x_test = classifier.generateVector(pd.concat([fake_test, real_test]))
 prediction = model.predict(np.asarray(x_test))
 print(classification_report(y_test, prediction))
 
+
+#  with https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset as dataset
 #               precision    recall  f1-score   support
 #
 #            0       0.99      0.99      0.99      2000
@@ -226,3 +241,14 @@ print(classification_report(y_test, prediction))
 #     accuracy                           0.99      4000
 #    macro avg       0.99      0.99      0.99      4000
 # weighted avg       0.99      0.99      0.99      4000
+
+# with https://www.kaggle.com/c/fake-news/data?select=train.csv as dataset
+
+#               precision    recall  f1-score   support
+# 
+#            0       0.73      0.83      0.77       700
+#            1       0.80      0.69      0.74       700
+# 
+#     accuracy                           0.76      1400
+#    macro avg       0.76      0.76      0.76      1400
+# weighted avg       0.76      0.76      0.76      1400
