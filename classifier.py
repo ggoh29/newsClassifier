@@ -186,6 +186,7 @@ real = alt.iloc[number_of_labels[1]:].reset_index().drop(columns = ['index'])
 bucket_train = 700
 bucket_test = 70
 
+# The commented code is using a dataset that is not as good
 # fake = pd.read_csv(source+fake)
 # real = pd.read_csv(source+real)
 # 
