@@ -13,7 +13,7 @@ import math
 import copy
 
 
-source = r"C:/Users/CHRIS/Documents/"
+source = r"path to directory with csv files"
 fake = "Fake.csv"
 real = "True.csv"
 
