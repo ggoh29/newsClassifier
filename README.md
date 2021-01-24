@@ -5,7 +5,7 @@ Hexbridge Marshall Wace challenge
 
 Team twH1uxEQ, Bot that detects and reports disinformation on social media platforms
 
-News classifier Optimised based On SEmantics analysis (NOOSE)
+News classifier Optimised On SEmantics analysis (NOOSE) (NOOSE)
 
 We have built a working model of a classifier that can predict fake news. It does this by looking at the semantics of the news article. 
 Our dataset was taken from kaggle https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset
