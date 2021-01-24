@@ -15,7 +15,7 @@ import copy
 
 # dataset = https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset
 
-source = r"C:/Users/CHRIS/Documents/"
+source = r"path to csv"
 fake = "Fake.csv"
 real = "True.csv"
 
