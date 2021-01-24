@@ -105,6 +105,37 @@ class Classifier:
             for col in matrix[row]:
                 matrix[row][col] = np.log(matrix[row][col]/ acc)
 
+                
+    def generateVector(self, df):
+        vec = []
+
+        cols = df.columns
+        for index, row in df.iterrows():
+            title = row[cols[0]]
+            body = row[cols[1]]
+            vec.append(self.getProbVector(title, body))
+
+        return vec
+
+
+    def getProbVector(self, title, body):
+        title_score = analyser.polarity_scores(title)["compound"]
+        body_score = analyser.polarity_scores(body)["compound"]
+        title, body = self.tokenize(title), self.tokenize(body)
+        title_t_fake_prob = self.getlogProbTransitionProbMemOfOne(title, 'fake', 'title')
+        title_t_real_prob = self.getlogProbTransitionProbMemOfOne(title, 'real', 'title')
+        body_t_fake_prob = self.getlogProbTransitionProbMemOfOne(body, 'fake', 'body')
+        body_t_real_prob = self.getlogProbTransitionProbMemOfOne(body, 'real', 'body')
+        body_t_fake_prob_memTwo = self.getlogProbTransitionProbMemOfTwo(title, 'fake')
+        body_t_real_prob_memTwo = self.getlogProbTransitionProbMemOfTwo(title, 'real')
+        title_prob = softmax([title_t_fake_prob, title_t_real_prob])
+        body_prob = softmax([body_t_fake_prob, body_t_real_prob])
+        body_prob_memTwo = softmax([body_t_fake_prob_memTwo, body_t_real_prob_memTwo])
+        probVector = np.concatenate((title_prob, body_prob, body_prob_memTwo))
+        probVector = list(probVector)
+        probVector.append(title_score)
+        probVector.append(body_score)
+        return probVector
 
     # return logP(x_0 -> x_1 .... | txt_type)
     def getlogProbTransitionProbMemOfOne(self, token_list, txt_type, place):
@@ -139,38 +170,6 @@ class Classifier:
                 acc += matrix[prevprev + " " + prev][cur]
 
         return acc
-
-
-    def generateVector(self, df):
-        vec = []
-
-        cols = df.columns
-        for index, row in df.iterrows():
-            title = row[cols[0]]
-            body = row[cols[1]]
-            vec.append(self.getProbVector(title, body))
-
-        return vec
-
-
-    def getProbVector(self, title, body):
-        title_score = analyser.polarity_scores(title)["compound"]
-        body_score = analyser.polarity_scores(body)["compound"]
-        title, body = self.tokenize(title), self.tokenize(body)
-        title_t_fake_prob = self.getlogProbTransitionProbMemOfOne(title, 'fake', 'title')
-        title_t_real_prob = self.getlogProbTransitionProbMemOfOne(title, 'real', 'title')
-        body_t_fake_prob = self.getlogProbTransitionProbMemOfOne(body, 'fake', 'body')
-        body_t_real_prob = self.getlogProbTransitionProbMemOfOne(body, 'real', 'body')
-        body_t_fake_prob_memTwo = self.getlogProbTransitionProbMemOfTwo(title, 'fake')
-        body_t_real_prob_memTwo = self.getlogProbTransitionProbMemOfTwo(title, 'real')
-        title_prob = softmax([title_t_fake_prob, title_t_real_prob])
-        body_prob = softmax([body_t_fake_prob, body_t_real_prob])
-        body_prob_memTwo = softmax([body_t_fake_prob_memTwo, body_t_real_prob_memTwo])
-        probVector = np.concatenate((title_prob, body_prob, body_prob_memTwo))
-        probVector = list(probVector)
-        probVector.append(title_score)
-        probVector.append(body_score)
-        return probVector
 
 
 # The code directly below until the next comment uses https://www.kaggle.com/c/fake-news/data?select=train.csv as dataset
